@@ -2,7 +2,6 @@
 
 module Network.API.TLDR.Types.Category (
     Category(..)
-
 ) where
 
 import Control.Applicative
