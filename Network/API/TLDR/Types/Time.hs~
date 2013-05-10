@@ -1,0 +1,27 @@
+{-# LANGUAGE OverloadedStrings #-}
+
+module Network.API.TLDR.Types.Time (
+                                    Time(..),
+                                    LastActive(..),
+                                    CreatedAt(..)
+) where
+
+import Data.Aeson
+import Data.Aeson.Types (typeMismatch)
+import Data.Text (unpack)
+import Data.Time (parseTime, Day(..))
+import System.Locale (defaultTimeLocale)
+
+newtype Time = Time
+        {time :: Day} deriving (Eq, Show)
+
+instance FromJSON Time where
+    parseJSON (String t) =
+        case parseTime defaultTimeLocale "%FT%TZ" (unpack t) of
+          Just d -> return $ Time d
+          _      -> fail "could not parse time"
+    parseJSON v = typeMismatch "Time" v
+
+
+type LastActive = Time
+type CreatedAt = Time

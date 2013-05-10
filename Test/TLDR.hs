@@ -22,9 +22,18 @@ categoryJSONTest = TestCase $ do
                             assertEqual "second name is Tech News" "Tech News" (categoryName $ categories !! 1)
                             assertEqual "first slug is world-news" "world-news" (categorySlug $ head categories)
                            -- etc.
+userJSONTest = TestCase $ do
+                 let decoded = decode "{\"username\":\"josh\",\"lastActive\":\"2012-03-05T12:34:56.033Z\",\"createdAt\":\"2012-03-05T12:34:56.033Z\"}" :: Maybe User
+                 case decoded of
+                   Nothing -> assertFailure "should be a user"
+                   Just user -> do
+                                assertEqual "username is josh" (userUsername user) "josh"
+                                assertEqual "what" 2 2
 
 unitTests = TestList
-    [ TestLabel "Categories" categoryJSONTest ]
+            [ TestLabel "Categories" categoryJSONTest
+            , TestLabel "User" userJSONTest
+            ]
 
 main = do counts <- runTestTT unitTests
           let bad = errors counts + failures counts
