@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Network.API.TLDR.Types.User (
-    User(..)
+    User(..),
+    Gravatar(..)
 ) where
 
 import Control.Applicative
@@ -16,8 +17,8 @@ data Gravatar = Gravatar
     } deriving (Eq, Show)
 
 instance FromJSON Gravatar where
-    parseJSON  (Object v) =
-        Gravatar <$> v .: "url"
+    parseJSON  (Object v) = Gravatar <$> 
+        v .: "url"
     parseJSON _ = empty
 
 data User = User
@@ -26,15 +27,15 @@ data User = User
     , userCreatedAt :: ZonedTime
     , userTwitterHandle :: String
     , userBio :: String
-  --  , userGravatar :: Gravatar
+    , userGravatar :: Maybe Gravatar
     } deriving (Show)
 
 instance FromJSON User where
-    parseJSON (Object v) =
-        User <$> v .: "username"
-                 <*> liftM time (v .: "lastActive")
-                 <*> liftM time (v .: "createdAt")
-                 <*> v .:? "twitterHandle" .!= ""
-                 <*> v .:? "bio" .!= ""
-                       --                 <*> v .: "gravatar"
+    parseJSON (Object v) = User <$> 
+                    v .: "username" <*> 
+                    liftM time (v .: "lastActive") <*> 
+                    liftM time (v .: "createdAt") <*> 
+                    v .:? "twitterHandle" .!= "" <*> 
+                    v .:? "bio" .!= "" <*>
+                    v .:? "gravatar" 
     parseJSON _ = empty

@@ -22,7 +22,9 @@ library
                        aeson ==0.6.*,
                        timerep ==1.0.*,
                        bytestring >=0.9.0 && <0.10.1.0,
-                       http-streams,
+                       io-streams,
+                       http-streams ==0.6.*,
+                       attoparsec ==0.10.*,
                        text ==0.11.*,
                        time >=1.2.0.0 && <1.5.0.0
 
@@ -34,7 +36,9 @@ test-suite test
         base,
         text,
         old-locale,
+        attoparsec ==0.10.*,
         timerep,
+        io-streams,
         http-streams,
         aeson,
         bytestring,
