@@ -1,11 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Network.API.TLDR
+import Network.API.TLDR.HTTP
 import Network.API.TLDR.Types
 
 --import qualified Data.ByteString.Lazy.Char8 as B
 import Data.Aeson
 import Control.Monad (when)
+import Network.Http.Client
 import System.Exit (exitFailure)
 import Test.HUnit
     (Test(..), Counts(..),
@@ -36,10 +38,16 @@ userJSONTest = TestCase $ do
                                     Just g -> assertEqual "its an url" (gravatarUrl g) "http://foo.com"
                     -- should test the timestamps too i guess
 
+fetchUserTest :: Test
+fetchUserTest = TestCase $ do
+    x <- fetchUser "9000"
+    assertEqual "what" 1 1
+
 unitTests :: Test
 unitTests = TestList
             [ TestLabel "Categories" categoryJSONTest
             , TestLabel "User" userJSONTest
+            , TestLabel "FetchUser" fetchUserTest
             ]
 
 main :: IO ()
